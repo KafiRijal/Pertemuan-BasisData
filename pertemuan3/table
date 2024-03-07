@@ -1,0 +1,34 @@
+//pindah path
+cd \xampp\mysql\bin
+
+//masuk ke mysql
+mysql -u root -p
+
+//menggunakan database
+USE ti05
+
+//membuat table jabatan
+CREATE TABLE jabatan(
+    -> id int primary key NOT NULL auto_increment,
+    -> nama varchar(30) NOT NULL unique);
+
+    id(header)
+    int(type data)
+
+//membuat table pegawai
+CREATE TABLE pegawai(
+    -> id int primary key NOT NULL auto_increment,
+    -> nip varchar(30) NOT NULL unique,
+    -> nama varchar(30) NOT NULL,
+    -> email varchar(30),
+    -> tgl_lahir Date,
+    -> jabatan_id int not null REFERENCES jabatan(id));
+
+//mengubah panjang type data
+ALTER TABLE pegawai MODIFY email varchar(50);
+
+//show table
+desc pegawai;
+
+//menghapus kolom table
+ALTER TABLE pegawai DROP COLUMN tgl_lahir;
