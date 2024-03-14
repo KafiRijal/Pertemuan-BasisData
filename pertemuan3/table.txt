@@ -5,7 +5,7 @@ cd \xampp\mysql\bin
 mysql -u root -p
 
 //menggunakan database
-USE ti05
+USE ti05;
 
 //membuat table jabatan
 CREATE TABLE jabatan(
@@ -29,6 +29,7 @@ ALTER TABLE pegawai MODIFY email varchar(50);
 
 //show table
 desc pegawai;
+show tables;
 
 //menghapus kolom table
 ALTER TABLE pegawai DROP COLUMN tgl_lahir;
