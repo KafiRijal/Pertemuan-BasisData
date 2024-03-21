@@ -1,0 +1,35 @@
+// SELECT semua kolom
+select * FROM produk;
+
+// SELECT beberapa kolom
+SELECT kode, nama, harga_beli, harga_jual FROM produk;
+
+// klausa AND untuk menampilkan data dengan 2 persyaratan dan 2 syaratnya harus dipenuhi
+SELECT nama, harga_jual FROM produk
+    -> WHERE harga_jual < 5000000 AND harga_jual > 500000;
+
+// klausa OR untuk menampilkan data denga 2 persyaratan dan salah satu syarat harus dipenuhi
+SELECT nama, harga_jual FROM produk
+    -> WHERE harga_jual < 5000000 OR harga_jual > 500000;
+
+// klausa IN untuk menampilkan data yang dipilih
+SELECT id, nama FROM pelanggan WHERE id
+    -> IN(2,4,6);
+
+// klausa ORDER BY untuk mengurutkan data yang dipilih
+SELECT kode, nama, tgl_lahir FROM pelanggan
+    -> ORDER BY tgl_lahir DESC;
+
+// klausa LIMIT untuk membatasi data yang ditampilkan
+SELECT nama, harga_jual FROM produk
+    -> WHERE harga_jual LIMIT 4;
+
+// agregrat MAX untuk menampilkan nilai data tertinggi
+MariaDB [dbtokoti05]> SELECT nama, MAX(harga_jual) AS Produk_Termahal FROM produk;
+
+// untuk menampilkan pelanggan yang tempat lahirnya di jakarta
+SELECT nama, tgl_lahir FROM pelanggan
+    -> WHERE tmp_lahir = "jakarta";
+
+// untuk menampilkan produk yang harga jualnya lebih dari 10 juta dan lebih dari 5
+SELECT kode, nama, harga_jual, stok FROM produk WHERE harga_jual > 10000000 AND stok > 5;
