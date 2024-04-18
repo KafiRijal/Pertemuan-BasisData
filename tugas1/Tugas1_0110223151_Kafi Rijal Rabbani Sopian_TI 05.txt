@@ -1,0 +1,619 @@
+1. Membuat database baru dengan nama dbpegawai
+Jawaban:
+CREATE DATABASE dbpegawai;
+Query OK, 1 row affected (0.002 sec)
+
+2. Masuk ke database dbpegawai
+Jawaban:
+USE dbpegawai;
+Database changed
+
+3. Membuat tabel baru dengan nama divisi
+Jawaban: 
+CREATE TABLE divisi(
+    -> id int primary key auto_increment,
+    -> nama varchar(30) NOT NULL unique);
+Query OK, 0 rows affected (0.052 sec)
+
+4. Menampilkan deskripsi tabel divisi
+Jawaban:
+desc divisi;
++-------+-------------+------+-----+---------+----------------+
+| Field | Type        | Null | Key | Default | Extra          |
++-------+-------------+------+-----+---------+----------------+
+| id    | int(11)     | NO   | PRI | NULL    | auto_increment |
+| nama  | varchar(30) | NO   | UNI | NULL    |                |
++-------+-------------+------+-----+---------+----------------+
+2 rows in set (0.031 sec)
+
+5. Membuat tabel baru dengan nama jabatan
+Jawaban:
+CREATE TABLE jabatan(
+    -> id int primary key auto_increment,
+    -> nama varchar(30) NOT NULL unique);
+Query OK, 0 rows affected (0.166 sec)
+
+6. Menampilkan deskripsi tabel jabatan
+Jawaban:
+desc jabatan;
++-------+-------------+------+-----+---------+----------------+
+| Field | Type        | Null | Key | Default | Extra          |
++-------+-------------+------+-----+---------+----------------+
+| id    | int(11)     | NO   | PRI | NULL    | auto_increment |
+| nama  | varchar(30) | NO   | UNI | NULL    |                |
++-------+-------------+------+-----+---------+----------------+
+2 rows in set (0.052 sec)
+
+7. Membuat tabel baru dengan nama pegawai
+Jawaban:
+CREATE TABLE pegawai(
+    -> id int primary key auto_increment,
+    -> nip char(5) NOT NULL unique,
+    -> nama varchar(30) NOT NULL,
+    -> gender enum('Laki-Laki','Perempuan') NOT NULL,
+    -> tmp_lahir varchar(30) NOT NULL,
+    -> tgl_lahir date NOT NULL,
+    -> iddivisi int not null REFERENCES divisi(id),
+    -> idjabatan int not null REFERENCES jabatan(id),
+    -> alamat text);
+Query OK, 0 rows affected (0.046 sec)
+
+8. Menampilkan deskripsi tabel pegawai
+Jawaban:
+desc pegawai;
++-----------+-------------------------------+------+-----+---------+----------------+
+| Field     | Type                          | Null | Key | Default | Extra          |
++-----------+-------------------------------+------+-----+---------+----------------+
+| id        | int(11)                       | NO   | PRI | NULL    | auto_increment |
+| nip       | char(5)                       | NO   | UNI | NULL    |                |
+| nama      | varchar(30)                   | NO   |     | NULL    |                |
+| gender    | enum('Laki-Laki','Perempuan') | NO   |     | NULL    |                |
+| tmp_lahir | varchar(30)                   | NO   |     | NULL    |                |
+| tgl_lahir | date                          | NO   |     | NULL    |                |
+| iddivisi  | int(11)                       | NO   |     | NULL    |                |
+| idjabatan | int(11)                       | NO   |     | NULL    |                |
+| alamat    | text                          | YES  |     | NULL    |                |
++-----------+-------------------------------+------+-----+---------+----------------+
+9 rows in set (0.057 sec)
+
+9. Menampilkan tabel-tabel yang ada di dbpegawai
+Jawaban:
+show tables;
++---------------------+
+| Tables_in_dbpegawai |
++---------------------+
+| divisi              |
+| jabatan             |
+| pegawai             |
++---------------------+
+3 rows in set (0.002 sec)
+
+10. Menginput data divisi => SDM, Keuangan, Marketing, IT
+Jawaban:
+INSERT INTO divisi VALUES
+    -> ('','SDM'),
+    -> ('','Keuangan'),
+    -> ('','Marketing'),
+    -> ('','IT');
+Query OK, 4 rows affected, 4 warnings (0.008 sec)
+Records: 4  Duplicates: 0  Warnings: 4
+
+11. Menampilkan seluruh data divisi
+Jawaban:
+SELECT * FROM divisi;
++----+-----------+
+| id | nama      |
++----+-----------+
+|  4 | IT        |
+|  2 | Keuangan  |
+|  3 | Marketing |
+|  1 | SDM       |
++----+-----------+
+4 rows in set (0.001 sec)
+
+12. Menginput data jabatan => Direktur, Manajer, Asisten Manajer, Staff
+Jawaban:
+INSERT INTO jabatan VALUES
+    -> ('','Direktur'),
+    -> ('','Manajer'),
+    -> ('','Asisten Manajer'),
+    -> ('','Staff');
+Query OK, 4 rows affected, 4 warnings (0.005 sec)
+Records: 4  Duplicates: 0  Warnings: 4
+
+13. Menampilkan seluruh data jabatan
+SELECT * FROM jabatan;
++----+-----------------+
+| id | nama            |
++----+-----------------+
+|  3 | Asisten Manajer |
+|  1 | Direktur        |
+|  2 | Manajer         |
+|  4 | Staff           |
++----+-----------------+
+4 rows in set (0.001 sec)
+
+14. Menginput 20 orang pegawai ( 1 divisi 5 orang, untuk gender dan jabatan diacak)
+Jawaban:
+INSERT INTO pegawai
+    -> (nip, nama, gender, tmp_lahir, tgl_lahir, iddivisi, idjabatan, alamat)
+    -> VALUES
+    -> ('00001', 'Kafi', 'Laki-Laki', 'Depok', '2005-05-06', '4', '4', 'Jalan Lapangan Member'),
+    -> ('00002', 'Daffa', 'Laki-Laki', 'Depok', '2008-02-25', '4', '4', 'Jalan Lapangan Member'),
+    -> ('00003', 'Balqis', 'Perempuan', 'Depok', '2014-06-11', '4', '4', 'Jalan Lapangan Member'),
+    -> ('00004', 'Takbir', 'Laki-Laki', 'Indramayu', '2003-01-01', '4', '4', 'Jalan Kandanghaur'),
+    -> ('00005', 'Rere', 'Perempuan', 'Bandung', '2005-02-02', '4', '4', 'Jalan Bojong Malaka Indah'),
+    -> ('00006', 'Firda', 'Perempuan', 'Bekasi', '2005-03-03', '3', '3', 'Jalan Kampung Sidamukti'),
+    -> ('00007', 'Ghadi', 'Laki-Laki', 'Bandung', '2008-04-04', '3', '3', 'Jalan Bojong Malaka Indah'),
+    -> ('00008', 'Putri', 'Perempuan', 'Bandung', '2003-05-05', '3', '3', 'Jalan Bojong Malaka Indah'),
+    -> ('00009', 'Nanda', 'Perempuan', 'Bandung', '2008-06-06', '3', '3', 'Jalan Bojong Malaka Indah'),
+    -> ('00010', 'Citra', 'Perempuan', 'Bandung', '2014-07-07', '3', '3', 'Jalan Bojong Malaka Indah'),
+    -> ('00011', 'Aulia', 'Perempuan', 'Bekasi', '2008-08-08', '2', '2', 'Jalan Kampung Sidamukti'),
+    -> ('00012', 'Dinda', 'Perempuan', 'Bekasi', '2003-09-09', '2', '2', 'Jalan Kampung Sidamukti'),
+    -> ('00013', 'Radi', 'Laki-Laki', 'Bandung', '2003-10-10', '2', '2', 'Jalan Baleendah'),
+    -> ('00014', 'Vivi', 'Perempuan', 'Indramayu', '2000-11-11', '2', '2', 'Jalan Kandanghaur'),
+    -> ('00015', 'Nesya', 'Perempuan', 'Indramayu', '2008-12-12', '2', '2', 'Jalan Kandanghaur'),
+    -> ('00016', 'Putra', 'Laki-Laki', 'Bandung', '2005-01-02', '1', '1', 'Jalan Lembang'),
+    -> ('00017', 'Angga', 'Laki-Laki', 'Bogor', '2003-02-03', '1', '1', 'Jalan Jonggol'),
+    -> ('00018', 'Ade', 'Laki-Laki', 'Bandung', '2000-03-04', '1', '1', 'Jalan Lembang'),
+    -> ('00019', 'Imam', 'Laki-Laki', 'Bandung', '2000-05-06', '1', '1', 'Jalan Lembang'),
+    -> ('00020', 'Kiki', 'Perempuan', 'Bandung', '2000-07-08', '1', '1', 'Jalan Baleendah');
+Query OK, 20 rows affected (0.014 sec)
+Records: 20  Duplicates: 0  Warnings: 0
+
+15. Menampilkan seluruh data pegawai
+Jawaban:
+SELECT * FROM pegawai;
++----+-------+--------+-----------+-----------+------------+----------+-----------+---------------------------+
+| id | nip   | nama   | gender    | tmp_lahir | tgl_lahir  | iddivisi | idjabatan | alamat                    |
++----+-------+--------+-----------+-----------+------------+----------+-----------+---------------------------+
+|  1 | 00001 | Kafi   | Laki-Laki | Depok     | 2005-05-06 |        4 |         4 | Jalan Lapangan Member     |
+|  2 | 00002 | Daffa  | Laki-Laki | Depok     | 2008-02-25 |        4 |         4 | Jalan Lapangan Member     |
+|  3 | 00003 | Balqis | Perempuan | Depok     | 2014-06-11 |        4 |         4 | Jalan Lapangan Member     |
+|  4 | 00004 | Takbir | Laki-Laki | Indramayu | 2003-01-01 |        4 |         4 | Jalan Kandanghaur         |
+|  5 | 00005 | Rere   | Perempuan | Bandung   | 2005-02-02 |        4 |         4 | Jalan Bojong Malaka Indah |
+|  6 | 00006 | Firda  | Perempuan | Bekasi    | 2005-03-03 |        3 |         3 | Jalan Kampung Sidamukti   |
+|  7 | 00007 | Ghadi  | Laki-Laki | Bandung   | 2008-04-04 |        3 |         3 | Jalan Bojong Malaka Indah |
+|  8 | 00008 | Putri  | Perempuan | Bandung   | 2003-05-05 |        3 |         3 | Jalan Bojong Malaka Indah |
+|  9 | 00009 | Nanda  | Perempuan | Bandung   | 2008-06-06 |        3 |         3 | Jalan Bojong Malaka Indah |
+| 10 | 00010 | Citra  | Perempuan | Bandung   | 2014-07-07 |        3 |         3 | Jalan Bojong Malaka Indah |
+| 11 | 00011 | Aulia  | Perempuan | Bekasi    | 2008-08-08 |        2 |         2 | Jalan Kampung Sidamukti   |
+| 12 | 00012 | Dinda  | Perempuan | Bekasi    | 2003-09-09 |        2 |         2 | Jalan Kampung Sidamukti   |
+| 13 | 00013 | Radi   | Laki-Laki | Bandung   | 2003-10-10 |        2 |         2 | Jalan Baleendah           |
+| 14 | 00014 | Vivi   | Perempuan | Indramayu | 2000-11-11 |        2 |         2 | Jalan Kandanghaur         |
+| 15 | 00015 | Nesya  | Perempuan | Indramayu | 2008-12-12 |        2 |         2 | Jalan Kandanghaur         |
+| 16 | 00016 | Putra  | Laki-Laki | Bandung   | 2005-01-02 |        1 |         1 | Jalan Lembang             |
+| 17 | 00017 | Angga  | Laki-Laki | Bogor     | 2003-02-03 |        1 |         1 | Jalan Jonggol             |
+| 18 | 00018 | Ade    | Laki-Laki | Bandung   | 2000-03-04 |        1 |         1 | Jalan Lembang             |
+| 19 | 00019 | Imam   | Laki-Laki | Bandung   | 2000-05-06 |        1 |         1 | Jalan Lembang             |
+| 20 | 00020 | Kiki   | Perempuan | Bandung   | 2000-07-08 |        1 |         1 | Jalan Baleendah           |
++----+-------+--------+-----------+-----------+------------+----------+-----------+---------------------------+
+20 rows in set (0.001 sec)
+
+16. mengubah data 5 orang pegawai (dengan ketentuan ubah 3 kolom(bebas))
+Jawaban:
+UPDATE pegawai SET tmp_lahir = 'Bandung'
+    -> WHERE nip = 00001;
+Query OK, 1 row affected (0.018 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+UPDATE pegawai SET tgl_lahir = '2000-09-09'
+    -> WHERE nip = 00012;
+Query OK, 1 row affected (0.005 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+UPDATE pegawai SET alamat = 'Jalan Citra Indah'
+    -> WHERE nip = 00017;
+Query OK, 1 row affected (0.005 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+UPDATE pegawai SET tmp_lahir = 'Jakarta'
+    -> WHERE nip = 00002;
+Query OK, 1 row affected (0.005 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+UPDATE pegawai SET tmp_lahir = 'Bogor'
+    -> WHERE nip = 00003;
+Query OK, 1 row affected (0.004 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+17. Menghapus 2 orang pegawai pegawai terakhir
+Jawaban:
+DELETE FROM pegawai
+    -> WHERE id = 20;
+Query OK, 1 row affected (0.007 sec)
+
+DELETE FROM pegawai
+    -> WHERE id = 19;
+Query OK, 1 row affected (0.006 sec)
+
+18. Menggunakan alter tabel pada tabel pegawai untuk menambahkan kolom baru berat_badan dengan
+tipe data float wajib diisi, lalu input berat badan semua pegawai secara acak
+Jawaban:
+ALTER TABLE pegawai ADD COLUMN berat_badan float NOT NULL;
+Query OK, 0 rows affected (0.016 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+UPDATE pegawai SET berat_badan = FLOOR(RAND() * 11) + 50;
+Query OK, 18 rows affected (0.007 sec)
+Rows matched: 18  Changed: 18  Warnings: 0
+
+19. Menggunakan alter tabel pada tabel pegawai untuk menambahkan kolom baru umur dengan tipe data
+integer wajib diisi, lalu input umur semua pegawai secara acak
+Jawaban:
+ALTER TABLE pegawai ADD COLUMN umur int NOT NULL;
+Query OK, 0 rows affected (0.018 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+UPDATE pegawai SET umur = FLOOR(RAND() * 21) + 10;
+Query OK, 18 rows affected (0.008 sec)
+Rows matched: 18  Changed: 18  Warnings: 0
+
+20. Menggunakan alter tabel pada tabel pegawai untuk mengubah nama kolom gender menjadi
+jenis_kelamin
+Jawaban:
+ALTER TABLE pegawai CHANGE COLUMN gender jenis_kelamin enum('Laki-Laki', 'Perempuan');
+Query OK, 0 rows affected (0.199 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+21. Menampilkan kolom2 tertentu di tabel pegawai (nip,nama,jenis_kelamin,alamat)
+Jawaban:
+SELECT nip, nama, jenis_kelamin, alamat FROM pegawai;
++-------+--------+---------------+---------------------------+
+| nip   | nama   | jenis_kelamin | alamat                    |
++-------+--------+---------------+---------------------------+
+| 00001 | Kafi   | Laki-Laki     | Jalan Lapangan Member     |
+| 00002 | Daffa  | Laki-Laki     | Jalan Lapangan Member     |
+| 00003 | Balqis | Perempuan     | Jalan Lapangan Member     |
+| 00004 | Takbir | Laki-Laki     | Jalan Kandanghaur         |
+| 00005 | Rere   | Perempuan     | Jalan Bojong Malaka Indah |
+| 00006 | Firda  | Perempuan     | Jalan Kampung Sidamukti   |
+| 00007 | Ghadi  | Laki-Laki     | Jalan Bojong Malaka Indah |
+| 00008 | Putri  | Perempuan     | Jalan Bojong Malaka Indah |
+| 00009 | Nanda  | Perempuan     | Jalan Bojong Malaka Indah |
+| 00010 | Citra  | Perempuan     | Jalan Bojong Malaka Indah |
+| 00011 | Aulia  | Perempuan     | Jalan Kampung Sidamukti   |
+| 00012 | Dinda  | Perempuan     | Jalan Kampung Sidamukti   |
+| 00013 | Radi   | Laki-Laki     | Jalan Baleendah           |
+| 00014 | Vivi   | Perempuan     | Jalan Kandanghaur         |
+| 00015 | Nesya  | Perempuan     | Jalan Kandanghaur         |
+| 00016 | Putra  | Laki-Laki     | Jalan Lembang             |
+| 00017 | Angga  | Laki-Laki     | Jalan Citra Indah         |
+| 00018 | Ade    | Laki-Laki     | Jalan Lembang             |
++-------+--------+---------------+---------------------------+
+18 rows in set (0.001 sec)
+
+22. Menampilkan baris2 tertentu di tabel pegawai (yang gendernya laki2 saja)
+Jawaban:
+SELECT nama, jenis_kelamin FROM pegawai
+    -> WHERE jenis_kelamin = 'Laki-Laki';
++--------+---------------+
+| nama   | jenis_kelamin |
++--------+---------------+
+| Kafi   | Laki-Laki     |
+| Daffa  | Laki-Laki     |
+| Takbir | Laki-Laki     |
+| Ghadi  | Laki-Laki     |
+| Radi   | Laki-Laki     |
+| Putra  | Laki-Laki     |
+| Angga  | Laki-Laki     |
+| Ade    | Laki-Laki     |
++--------+---------------+
+8 rows in set (0.005 sec)
+
+23. Menampilkan baris2 tertentu di tabel pegawai (yang bekerja di divisi IT dan gendernya perempuan)
+Jawaban:
+SELECT nama, jenis_kelamin, iddivisi FROM pegawai
+    -> WHERE jenis_kelamin = 'Perempuan' AND iddivisi = '4';
++--------+---------------+----------+
+| nama   | jenis_kelamin | iddivisi |
++--------+---------------+----------+
+| Balqis | Perempuan     |        4 |
+| Rere   | Perempuan     |        4 |
++--------+---------------+----------+
+2 rows in set (0.008 sec)
+
+24. Menampilkan data pegawai yang umurnya di atas 30 tahun dan lahirnya di kota jakarta dengan
+klausa WHERE, AND
+Jawaban:
+SELECT nama, tmp_lahir, umur FROM pegawai
+    -> WHERE tmp_lahir = 'Jakarta' AND umur > 30;
+Empty set (0.000 sec)
+
+25. Menampilkan data pegawai yang bekerja pada divisi marketing, berumur lebih dari 30 tahun dan
+berjenis kelamin perempuan dengan klausa WHERE, AND
+Jawaban:
+SELECT nama, jenis_kelamin, iddivisi, umur FROM pegawai
+    -> WHERE jenis_kelamin = 'Perempuan' AND iddivisi = '3' AND umur > 30;
+Empty set (0.001 sec)
+
+26. Menampilkan data pegawai dengan klausa key (nip)
+Jawaban:
+SELECT * FROM pegawai
+    -> WHERE nip = '00001';
++----+-------+------+---------------+-----------+------------+----------+-----------+-----------------------+-------------+------+
+| id | nip   | nama | jenis_kelamin | tmp_lahir | tgl_lahir  | iddivisi | idjabatan | alamat                | berat_badan | umur |
++----+-------+------+---------------+-----------+------------+----------+-----------+-----------------------+-------------+------+
+|  1 | 00001 | Kafi | Laki-Laki     | Bandung   | 2005-05-06 |        4 |         4 | Jalan Lapangan Member |          51 |   24 |
++----+-------+------+---------------+-----------+------------+----------+-----------+-----------------------+-------------+------+
+1 row in set (0.005 sec)
+
+27. Menampilkan data pegawai dengan klausa non key (gender) 
+Jawaban:
+SELECT * FROM pegawai
+    -> WHERE jenis_kelamin = 'Perempuan';
++----+-------+--------+---------------+-----------+------------+----------+-----------+---------------------------+-------------+------+
+| id | nip   | nama   | jenis_kelamin | tmp_lahir | tgl_lahir  | iddivisi | idjabatan | alamat                    | berat_badan | umur |
++----+-------+--------+---------------+-----------+------------+----------+-----------+---------------------------+-------------+------+
+|  3 | 00003 | Balqis | Perempuan     | Bogor     | 2014-06-11 |        4 |         4 | Jalan Lapangan Member     |          58 |   22 |
+|  5 | 00005 | Rere   | Perempuan     | Bandung   | 2005-02-02 |        4 |         4 | Jalan Bojong Malaka Indah |          60 |   29 |
+|  6 | 00006 | Firda  | Perempuan     | Bekasi    | 2005-03-03 |        3 |         3 | Jalan Kampung Sidamukti   |          57 |   17 |
+|  8 | 00008 | Putri  | Perempuan     | Bandung   | 2003-05-05 |        3 |         3 | Jalan Bojong Malaka Indah |          53 |   17 |
+|  9 | 00009 | Nanda  | Perempuan     | Bandung   | 2008-06-06 |        3 |         3 | Jalan Bojong Malaka Indah |          53 |   20 |
+| 10 | 00010 | Citra  | Perempuan     | Bandung   | 2014-07-07 |        3 |         3 | Jalan Bojong Malaka Indah |          54 |   18 |
+| 11 | 00011 | Aulia  | Perempuan     | Bekasi    | 2008-08-08 |        2 |         2 | Jalan Kampung Sidamukti   |          52 |   22 |
+| 12 | 00012 | Dinda  | Perempuan     | Bekasi    | 2000-09-09 |        2 |         2 | Jalan Kampung Sidamukti   |          60 |   26 |
+| 14 | 00014 | Vivi   | Perempuan     | Indramayu | 2000-11-11 |        2 |         2 | Jalan Kandanghaur         |          56 |   19 |
+| 15 | 00015 | Nesya  | Perempuan     | Indramayu | 2008-12-12 |        2 |         2 | Jalan Kandanghaur         |          54 |   26 |
++----+-------+--------+---------------+-----------+------------+----------+-----------+---------------------------+-------------+------+
+10 rows in set (0.002 sec)
+
+28. Menampilakan data pegawai dengan klausa in (menyebutkan beberapa nip)
+Jawaban:
+SELECT * FROM pegawai
+    -> WHERE nip IN ('00001', '00005', '00006', '00008', '00012');
++----+-------+-------+---------------+-----------+------------+----------+-----------+---------------------------+-------------+------+
+| id | nip   | nama  | jenis_kelamin | tmp_lahir | tgl_lahir  | iddivisi | idjabatan | alamat                    | berat_badan | umur |
++----+-------+-------+---------------+-----------+------------+----------+-----------+---------------------------+-------------+------+
+|  1 | 00001 | Kafi  | Laki-Laki     | Bandung   | 2005-05-06 |        4 |         4 | Jalan Lapangan Member     |          51 |   24 |
+|  5 | 00005 | Rere  | Perempuan     | Bandung   | 2005-02-02 |        4 |         4 | Jalan Bojong Malaka Indah |          60 |   29 |
+|  6 | 00006 | Firda | Perempuan     | Bekasi    | 2005-03-03 |        3 |         3 | Jalan Kampung Sidamukti   |          57 |   17 |
+|  8 | 00008 | Putri | Perempuan     | Bandung   | 2003-05-05 |        3 |         3 | Jalan Bojong Malaka Indah |          53 |   17 |
+| 12 | 00012 | Dinda | Perempuan     | Bekasi    | 2000-09-09 |        2 |         2 | Jalan Kampung Sidamukti   |          60 |   26 |
++----+-------+-------+---------------+-----------+------------+----------+-----------+---------------------------+-------------+------+
+5 rows in set (0.009 sec)
+
+29. Menampilkan data pegawai dengan klausa not in (menyebutkan beberapa tempat lahir)
+Jawaban:
+SELECT * FROM pegawai
+    -> WHERE tmp_lahir NOT IN ('Jakarta', 'Bogor', 'Bekasi', 'Indramayu');
++----+-------+-------+---------------+-----------+------------+----------+-----------+---------------------------+-------------+------+
+| id | nip   | nama  | jenis_kelamin | tmp_lahir | tgl_lahir  | iddivisi | idjabatan | alamat                    | berat_badan | umur |
++----+-------+-------+---------------+-----------+------------+----------+-----------+---------------------------+-------------+------+
+|  1 | 00001 | Kafi  | Laki-Laki     | Bandung   | 2005-05-06 |        4 |         4 | Jalan Lapangan Member     |          51 |   24 |
+|  5 | 00005 | Rere  | Perempuan     | Bandung   | 2005-02-02 |        4 |         4 | Jalan Bojong Malaka Indah |          60 |   29 |
+|  7 | 00007 | Ghadi | Laki-Laki     | Bandung   | 2008-04-04 |        3 |         3 | Jalan Bojong Malaka Indah |          55 |   11 |
+|  8 | 00008 | Putri | Perempuan     | Bandung   | 2003-05-05 |        3 |         3 | Jalan Bojong Malaka Indah |          53 |   17 |
+|  9 | 00009 | Nanda | Perempuan     | Bandung   | 2008-06-06 |        3 |         3 | Jalan Bojong Malaka Indah |          53 |   20 |
+| 10 | 00010 | Citra | Perempuan     | Bandung   | 2014-07-07 |        3 |         3 | Jalan Bojong Malaka Indah |          54 |   18 |
+| 13 | 00013 | Radi  | Laki-Laki     | Bandung   | 2003-10-10 |        2 |         2 | Jalan Baleendah           |          59 |   13 |
+| 16 | 00016 | Putra | Laki-Laki     | Bandung   | 2005-01-02 |        1 |         1 | Jalan Lembang             |          51 |   23 |
+| 18 | 00018 | Ade   | Laki-Laki     | Bandung   | 2000-03-04 |        1 |         1 | Jalan Lembang             |          59 |   28 |
++----+-------+-------+---------------+-----------+------------+----------+-----------+---------------------------+-------------+------+
+9 rows in set (0.001 sec)
+
+30. Menampilkan data pegawai berdasarkan nama secara ascending
+Jawaban:
+SELECT * FROM pegawai
+    -> ORDER BY nama ASC;
++----+-------+--------+---------------+-----------+------------+----------+-----------+---------------------------+-------------+------+
+| id | nip   | nama   | jenis_kelamin | tmp_lahir | tgl_lahir  | iddivisi | idjabatan | alamat                    | berat_badan | umur |
++----+-------+--------+---------------+-----------+------------+----------+-----------+---------------------------+-------------+------+
+| 18 | 00018 | Ade    | Laki-Laki     | Bandung   | 2000-03-04 |        1 |         1 | Jalan Lembang             |          59 |   28 |
+| 17 | 00017 | Angga  | Laki-Laki     | Bogor     | 2003-02-03 |        1 |         1 | Jalan Citra Indah         |          57 |   26 |
+| 11 | 00011 | Aulia  | Perempuan     | Bekasi    | 2008-08-08 |        2 |         2 | Jalan Kampung Sidamukti   |          52 |   22 |
+|  3 | 00003 | Balqis | Perempuan     | Bogor     | 2014-06-11 |        4 |         4 | Jalan Lapangan Member     |          58 |   22 |
+| 10 | 00010 | Citra  | Perempuan     | Bandung   | 2014-07-07 |        3 |         3 | Jalan Bojong Malaka Indah |          54 |   18 |
+|  2 | 00002 | Daffa  | Laki-Laki     | Jakarta   | 2008-02-25 |        4 |         4 | Jalan Lapangan Member     |          52 |   25 |
+| 12 | 00012 | Dinda  | Perempuan     | Bekasi    | 2000-09-09 |        2 |         2 | Jalan Kampung Sidamukti   |          60 |   26 |
+|  6 | 00006 | Firda  | Perempuan     | Bekasi    | 2005-03-03 |        3 |         3 | Jalan Kampung Sidamukti   |          57 |   17 |
+|  7 | 00007 | Ghadi  | Laki-Laki     | Bandung   | 2008-04-04 |        3 |         3 | Jalan Bojong Malaka Indah |          55 |   11 |
+|  1 | 00001 | Kafi   | Laki-Laki     | Bandung   | 2005-05-06 |        4 |         4 | Jalan Lapangan Member     |          51 |   24 |
+|  9 | 00009 | Nanda  | Perempuan     | Bandung   | 2008-06-06 |        3 |         3 | Jalan Bojong Malaka Indah |          53 |   20 |
+| 15 | 00015 | Nesya  | Perempuan     | Indramayu | 2008-12-12 |        2 |         2 | Jalan Kandanghaur         |          54 |   26 |
+| 16 | 00016 | Putra  | Laki-Laki     | Bandung   | 2005-01-02 |        1 |         1 | Jalan Lembang             |          51 |   23 |
+|  8 | 00008 | Putri  | Perempuan     | Bandung   | 2003-05-05 |        3 |         3 | Jalan Bojong Malaka Indah |          53 |   17 |
+| 13 | 00013 | Radi   | Laki-Laki     | Bandung   | 2003-10-10 |        2 |         2 | Jalan Baleendah           |          59 |   13 |
+|  5 | 00005 | Rere   | Perempuan     | Bandung   | 2005-02-02 |        4 |         4 | Jalan Bojong Malaka Indah |          60 |   29 |
+|  4 | 00004 | Takbir | Laki-Laki     | Indramayu | 2003-01-01 |        4 |         4 | Jalan Kandanghaur         |          50 |   25 |
+| 14 | 00014 | Vivi   | Perempuan     | Indramayu | 2000-11-11 |        2 |         2 | Jalan Kandanghaur         |          56 |   19 |
++----+-------+--------+---------------+-----------+------------+----------+-----------+---------------------------+-------------+------+
+18 rows in set (0.005 sec)
+
+31. Menampilkan data pegawai dari yang berat badan paling gemuk ke paling kurus
+Jawaban:
+SELECT * FROM pegawai
+    -> ORDER BY berat_badan DESC;
++----+-------+--------+---------------+-----------+------------+----------+-----------+---------------------------+-------------+------+
+| id | nip   | nama   | jenis_kelamin | tmp_lahir | tgl_lahir  | iddivisi | idjabatan | alamat                    | berat_badan | umur |
++----+-------+--------+---------------+-----------+------------+----------+-----------+---------------------------+-------------+------+
+|  5 | 00005 | Rere   | Perempuan     | Bandung   | 2005-02-02 |        4 |         4 | Jalan Bojong Malaka Indah |          60 |   29 |
+| 12 | 00012 | Dinda  | Perempuan     | Bekasi    | 2000-09-09 |        2 |         2 | Jalan Kampung Sidamukti   |          60 |   26 |
+| 13 | 00013 | Radi   | Laki-Laki     | Bandung   | 2003-10-10 |        2 |         2 | Jalan Baleendah           |          59 |   13 |
+| 18 | 00018 | Ade    | Laki-Laki     | Bandung   | 2000-03-04 |        1 |         1 | Jalan Lembang             |          59 |   28 |
+|  3 | 00003 | Balqis | Perempuan     | Bogor     | 2014-06-11 |        4 |         4 | Jalan Lapangan Member     |          58 |   22 |
+|  6 | 00006 | Firda  | Perempuan     | Bekasi    | 2005-03-03 |        3 |         3 | Jalan Kampung Sidamukti   |          57 |   17 |
+| 17 | 00017 | Angga  | Laki-Laki     | Bogor     | 2003-02-03 |        1 |         1 | Jalan Citra Indah         |          57 |   26 |
+| 14 | 00014 | Vivi   | Perempuan     | Indramayu | 2000-11-11 |        2 |         2 | Jalan Kandanghaur         |          56 |   19 |
+|  7 | 00007 | Ghadi  | Laki-Laki     | Bandung   | 2008-04-04 |        3 |         3 | Jalan Bojong Malaka Indah |          55 |   11 |
+| 10 | 00010 | Citra  | Perempuan     | Bandung   | 2014-07-07 |        3 |         3 | Jalan Bojong Malaka Indah |          54 |   18 |
+| 15 | 00015 | Nesya  | Perempuan     | Indramayu | 2008-12-12 |        2 |         2 | Jalan Kandanghaur         |          54 |   26 |
+|  8 | 00008 | Putri  | Perempuan     | Bandung   | 2003-05-05 |        3 |         3 | Jalan Bojong Malaka Indah |          53 |   17 |
+|  9 | 00009 | Nanda  | Perempuan     | Bandung   | 2008-06-06 |        3 |         3 | Jalan Bojong Malaka Indah |          53 |   20 |
+|  2 | 00002 | Daffa  | Laki-Laki     | Jakarta   | 2008-02-25 |        4 |         4 | Jalan Lapangan Member     |          52 |   25 |
+| 11 | 00011 | Aulia  | Perempuan     | Bekasi    | 2008-08-08 |        2 |         2 | Jalan Kampung Sidamukti   |          52 |   22 |
+|  1 | 00001 | Kafi   | Laki-Laki     | Bandung   | 2005-05-06 |        4 |         4 | Jalan Lapangan Member     |          51 |   24 |
+| 16 | 00016 | Putra  | Laki-Laki     | Bandung   | 2005-01-02 |        1 |         1 | Jalan Lembang             |          51 |   23 |
+|  4 | 00004 | Takbir | Laki-Laki     | Indramayu | 2003-01-01 |        4 |         4 | Jalan Kandanghaur         |          50 |   25 |
++----+-------+--------+---------------+-----------+------------+----------+-----------+---------------------------+-------------+------+
+18 rows in set (0.002 sec)
+
+32. Menampilkan data 5 pegawai teratas gunakan klausa limit
+Jawaban:
+SELECT * FROM pegawai LIMIT 5;
++----+-------+--------+---------------+-----------+------------+----------+-----------+---------------------------+-------------+------+
+| id | nip   | nama   | jenis_kelamin | tmp_lahir | tgl_lahir  | iddivisi | idjabatan | alamat                    | berat_badan | umur |
++----+-------+--------+---------------+-----------+------------+----------+-----------+---------------------------+-------------+------+
+|  1 | 00001 | Kafi   | Laki-Laki     | Bandung   | 2005-05-06 |        4 |         4 | Jalan Lapangan Member     |          51 |   24 |
+|  2 | 00002 | Daffa  | Laki-Laki     | Jakarta   | 2008-02-25 |        4 |         4 | Jalan Lapangan Member     |          52 |   25 |
+|  3 | 00003 | Balqis | Perempuan     | Bogor     | 2014-06-11 |        4 |         4 | Jalan Lapangan Member     |          58 |   22 |
+|  4 | 00004 | Takbir | Laki-Laki     | Indramayu | 2003-01-01 |        4 |         4 | Jalan Kandanghaur         |          50 |   25 |
+|  5 | 00005 | Rere   | Perempuan     | Bandung   | 2005-02-02 |        4 |         4 | Jalan Bojong Malaka Indah |          60 |   29 |
++----+-------+--------+---------------+-----------+------------+----------+-----------+---------------------------+-------------+------+
+5 rows in set (0.001 sec)
+
+33. Menampilkan data 5 pegawai terbawah gunakan klausa limit offset
+Jawaban:
+SELECT * FROM pegawai LIMIT 5 OFFSET 13;
++----+-------+-------+---------------+-----------+------------+----------+-----------+-------------------+-------------+------+
+| id | nip   | nama  | jenis_kelamin | tmp_lahir | tgl_lahir  | iddivisi | idjabatan | alamat            | berat_badan | umur |
++----+-------+-------+---------------+-----------+------------+----------+-----------+-------------------+-------------+------+
+| 14 | 00014 | Vivi  | Perempuan     | Indramayu | 2000-11-11 |        2 |         2 | Jalan Kandanghaur |          56 |   19 |
+| 15 | 00015 | Nesya | Perempuan     | Indramayu | 2008-12-12 |        2 |         2 | Jalan Kandanghaur |          54 |   26 |
+| 16 | 00016 | Putra | Laki-Laki     | Bandung   | 2005-01-02 |        1 |         1 | Jalan Lembang     |          51 |   23 |
+| 17 | 00017 | Angga | Laki-Laki     | Bogor     | 2003-02-03 |        1 |         1 | Jalan Citra Indah |          57 |   26 |
+| 18 | 00018 | Ade   | Laki-Laki     | Bandung   | 2000-03-04 |        1 |         1 | Jalan Lembang     |          59 |   28 |
++----+-------+-------+---------------+-----------+------------+----------+-----------+-------------------+-------------+------+
+5 rows in set (0.003 sec)
+
+34. Menampilkan jumlah pegawai gunakan fungsi aggregrat count
+Jawaban:
+SELECT COUNT(*) AS jumlah_pegawai FROM pegawai;
++----------------+
+| jumlah_pegawai |
++----------------+
+|             18 |
++----------------+
+1 row in set (0.007 sec)
+
+35. Menampilkan nip,nama pegawai, umur yg paling tua gunakan fungsi aggregrat max (kombinasi
+dengan sub query)
+Jawaban:
+SELECT nip, nama, umur FROM pegawai
+    -> WHERE umur = (SELECT MAX(umur) FROM pegawai);
++-------+------+------+
+| nip   | nama | umur |
++-------+------+------+
+| 00005 | Rere |   29 |
++-------+------+------+
+1 row in set (0.106 sec)
+
+36. Menampilkan nip,nama pegawai, berat_badan yg paling kurus gunakan fungsi aggregrat min
+(kombinasi dengan sub query)
+Jawaban:
+SELECT nip, nama, berat_badan FROM pegawai
+    -> WHERE berat_badan = (SELECT MIN(berat_badan) FROM pegawai);
++-------+--------+-------------+
+| nip   | nama   | berat_badan |
++-------+--------+-------------+
+| 00004 | Takbir |          50 |
++-------+--------+-------------+
+1 row in set (0.004 sec)
+
+37. Menampilkan data rata2 umur pegawai gunakan fungsi aggregrat avg
+Jawaban:
+SELECT AVG(umur) AS rata2_umur FROM pegawai;
++------------+
+| rata2_umur |
++------------+
+|    21.7222 |
++------------+
+1 row in set (0.003 sec)
+
+38. Menampilkan jumlah data pegawai yang laki2 dan berumur lebih dari 40 tahun dan berjabatan
+Manajer, gunakan fungsi aggregrat count dan klausa AND 
+Jawaban:
+SELECT COUNT(*) AS jumlah_pegawai_manajer FROM pegawai
+    -> WHERE jenis_kelamin = 'Laki-Laki' AND umur > 40 AND idjabatan = '2';
++------------------------+
+| jumlah_pegawai_manajer |
++------------------------+
+|                      0 |
++------------------------+
+1 row in set (0.001 sec)
+
+39. Menampilkan jumlah data pegawai yang perempuan dan berumur kurang dari 40 tahun dan
+berjabatan Staff, gunakan fungsi aggregrat count dan klausa AND 
+Jawaban:
+SELECT COUNT(*) AS jumlah_pegawai_staff FROM pegawai
+    -> WHERE jenis_kelamin = 'Perempuan' AND umur < 40 AND idjabatan = '4';
++----------------------+
+| jumlah_pegawai_staff |
++----------------------+
+|                    2 |
++----------------------+
+1 row in set (0.001 sec)
+
+40. Menampilkan jumlah data pegawai yang perempuan gunakan fungsi aggregrat count
+Jawaban:
+SELECT COUNT(*) AS jumlah_pegawai_perempuan FROM pegawai
+    -> WHERE jenis_kelamin = 'Perempuan';
++--------------------------+
+| jumlah_pegawai_perempuan |
++--------------------------+
+|                       10 |
++--------------------------+
+1 row in set (0.001 sec)
+
+41. Menampilkan jumlah pegawai yang bekerja di divisi SDM dengan fungsi aggregrat sum dan klausa
+WHERE
+Jawaban:
+SELECT SUM(iddivisi) AS jumlah_pegawai_sdm FROM pegawai
+    -> WHERE iddivisi = '1';
++--------------------+
+| jumlah_pegawai_sdm |
++--------------------+
+|                  3 |
++--------------------+
+1 row in set (0.001 sec)
+
+42.  Menampilkan jumlah pegawai berdasarkan divisi masing2 menggunakan fungsi aggregrat count
+dan klausa group by
+Jawaban:
+SELECT iddivisi, COUNT(*) AS jumlah_pegawai FROM pegawai
+    -> GROUP BY iddivisi;
++----------+----------------+
+| iddivisi | jumlah_pegawai |
++----------+----------------+
+|        1 |              3 |
+|        2 |              5 |
+|        3 |              5 |
+|        4 |              5 |
++----------+----------------+
+4 rows in set (0.009 sec)
+
+43. Menampilkan data jumlah pegawai berdasarkan gender, yg jumlah minimal 10 orang (gunakan
+group by dan having)
+Jawaban:
+SELECT jenis_kelamin, COUNT(*) AS jumlah_pegawai FROM pegawai
+    -> GROUP BY jenis_kelamin HAVING jumlah_pegawai >= 10;
++---------------+----------------+
+| jenis_kelamin | jumlah_pegawai |
++---------------+----------------+
+| Perempuan     |             10 |
++---------------+----------------+
+1 row in set (0.001 sec)
+
+44. Mencari data pegawai yang berawalan kata Muhammad
+Jawaban:
+SELECT * FROM pegawai
+    -> WHERE nama LIKE 'Muhammad%';
+Empty set (0.001 sec)
+
+45. Mencari data pegawai yang berakhiran kata Santoso 
+Jawaban:
+SELECT * FROM pegawai
+    -> WHERE nama LIKE '%Santoso';
+Empty set (0.002 sec)
+
+46. Mencari data pegawai yang mengadung kata Asep
+Jawaban:
+SELECT * FROM pegawai
+    -> WHERE nama LIKE '%Asep%';
+Empty set (0.002 sec)
+
+47. Mencari data pegawai yang huruf kelimanya huruf S
+Jawaban:
+SELECT * FROM pegawai
+    -> WHERE nama LIKE '____s%';
+Empty set (0.001 sec)
